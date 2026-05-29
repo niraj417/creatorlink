@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "246812613566",
+    "project_id": "creatorlink-niraj417",
+    "storage_bucket": "creatorlink-niraj417.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246812613566:android:6a0e80c919b8d9a253b7ef",
+        "android_client_info": {
+          "package_name": "com.creatorlink.creatorlink"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRX_IqO5tceLaxTwUB2i1il-lypRRdM1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
