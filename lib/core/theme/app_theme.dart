@@ -299,7 +299,7 @@ class AppTheme {
         color: AppColors.glassBorder,
         thickness: 1,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.surfaceCard,
         elevation: 0,
         shape: RoundedRectangleBorder(

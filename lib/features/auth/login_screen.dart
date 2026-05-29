@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../core/router/app_router.dart';
 import '../../core/providers/firebase_providers.dart';
 import '../../core/providers/user_provider.dart';
 import '../../core/theme/app_theme.dart';
