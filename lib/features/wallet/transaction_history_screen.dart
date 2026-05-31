@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -65,10 +65,10 @@ class _TransactionHistoryScreenState
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: AppColors.accentGreen.withOpacity(0.12),
+                  color: AppColors.accentGreen.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                      color: AppColors.accentGreen.withOpacity(0.3)),
+                      color: AppColors.accentGreen.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -110,7 +110,7 @@ class _TransactionHistoryScreenState
                       selected: selected,
                       onSelected: (_) => setState(
                           () => _filterType = _filterOptions[i]),
-                      selectedColor: AppColors.accentViolet.withOpacity(0.2),
+                      selectedColor: AppColors.accentViolet.withValues(alpha: 0.2),
                       checkmarkColor: AppColors.accentViolet,
                       side: BorderSide(
                         color: selected
@@ -276,7 +276,7 @@ class _TxTile extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(icon, color: color, size: 20),

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -113,7 +113,7 @@ class _WithdrawalRequestScreenState extends ConsumerState<WithdrawalRequestScree
               children: [
                 // Balance display
                 GlowyCard(
-                  glowColor: AppColors.accentGreen.withOpacity(0.1),
+                  glowColor: AppColors.accentGreen.withValues(alpha: 0.1),
                   child: Row(
                     children: [
                       const Icon(Icons.account_balance_wallet_rounded,
@@ -173,7 +173,7 @@ class _WithdrawalRequestScreenState extends ConsumerState<WithdrawalRequestScree
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: _method == 'upi'
-                                ? AppColors.accentViolet.withOpacity(0.12)
+                                ? AppColors.accentViolet.withValues(alpha: 0.12)
                                 : AppColors.surfaceElevated,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
@@ -209,7 +209,7 @@ class _WithdrawalRequestScreenState extends ConsumerState<WithdrawalRequestScree
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: _method == 'bank'
-                                ? AppColors.accentViolet.withOpacity(0.12)
+                                ? AppColors.accentViolet.withValues(alpha: 0.12)
                                 : AppColors.surfaceElevated,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(

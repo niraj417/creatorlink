@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -35,7 +35,7 @@ class _AppShellState extends ConsumerState<AppShell> {
             selectedIndex: _selectedIndex,
             elevation: 0,
             backgroundColor: Colors.transparent,
-            indicatorColor: AppColors.accentViolet.withOpacity(0.15),
+            indicatorColor: AppColors.accentViolet.withValues(alpha: 0.15),
             onDestinationSelected: (i) {
               setState(() => _selectedIndex = i);
               context.go(_routes[i]);

@@ -1,4 +1,4 @@
-import 'dart:async' show unawaited;
+﻿import 'dart:async' show unawaited;
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -318,7 +318,7 @@ class _UsersAdminTabState extends ConsumerState<UsersAdminTab> {
       label: Text(label),
       selected: selected,
       onSelected: (_) => setState(() => _roleFilter = role),
-      selectedColor: AppColors.accentViolet.withOpacity(0.2),
+      selectedColor: AppColors.accentViolet.withValues(alpha: 0.2),
       checkmarkColor: AppColors.accentViolet,
       side: BorderSide(
         color: selected ? AppColors.accentViolet : AppColors.glassBorder,
@@ -379,14 +379,14 @@ class _UserCard extends StatelessWidget {
     final roleColor = _roleColor(user.role);
     return GlowyCard(
       glowColor: user.banned
-          ? AppColors.accentRed.withOpacity(0.05)
-          : roleColor.withOpacity(0.05),
+          ? AppColors.accentRed.withValues(alpha: 0.05)
+          : roleColor.withValues(alpha: 0.05),
       child: Row(
         children: [
           // Avatar
           CircleAvatar(
             radius: 24,
-            backgroundColor: roleColor.withOpacity(0.15),
+            backgroundColor: roleColor.withValues(alpha: 0.15),
             backgroundImage: user.photoURL.isNotEmpty
                 ? NetworkImage(user.photoURL)
                 : null,
@@ -424,7 +424,7 @@ class _UserCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: AppColors.accentRed.withOpacity(0.15),
+                          color: AppColors.accentRed.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text('BANNED',
@@ -437,7 +437,7 @@ class _UserCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: roleColor.withOpacity(0.12),
+                          color: roleColor.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -626,7 +626,7 @@ class AnalyticsAdminTab extends ConsumerWidget {
                 ).animate(delay: 180.ms).fadeIn(),
                 const SizedBox(height: 24),
                 GlowyCard(
-                  glowColor: AppColors.accentViolet.withOpacity(0.05),
+                  glowColor: AppColors.accentViolet.withValues(alpha: 0.05),
                   child: Row(
                     children: [
                       const Icon(Icons.info_outline_rounded,
@@ -691,7 +691,7 @@ class MetricCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: AppDecorations.glassCard(
-          glowColor: accentColor.withOpacity(0.08)),
+          glowColor: accentColor.withValues(alpha: 0.08)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+﻿import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -133,7 +133,7 @@ class _CampaignDetailBodyState extends ConsumerState<_CampaignDetailBody> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      AppColors.accentViolet.withOpacity(0.2),
+                      AppColors.accentViolet.withValues(alpha: 0.2),
                       AppColors.surface,
                     ],
                   ),
@@ -146,7 +146,7 @@ class _CampaignDetailBodyState extends ConsumerState<_CampaignDetailBody> {
                         width: 72,
                         height: 72,
                         decoration: BoxDecoration(
-                          color: AppColors.accentViolet.withOpacity(0.15),
+                          color: AppColors.accentViolet.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(18),
                           border: Border.all(color: AppColors.glassBorder),
                         ),
@@ -237,10 +237,10 @@ class _CampaignDetailBodyState extends ConsumerState<_CampaignDetailBody> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: AppColors.accentViolet.withOpacity(0.1),
+                        color: AppColors.accentViolet.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                            color: AppColors.accentViolet.withOpacity(0.3)),
+                            color: AppColors.accentViolet.withValues(alpha: 0.3)),
                       ),
                       child: Text(
                         tag,
@@ -333,9 +333,9 @@ class _MetricChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

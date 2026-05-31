@@ -1,4 +1,4 @@
-import 'package:fl_chart/fl_chart.dart';
+﻿import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,7 +60,7 @@ class BrandCampaignDashboard extends ConsumerWidget {
             const SizedBox(height: 12),
             GlowyCard(
               height: 200,
-              glowColor: AppColors.accentViolet.withOpacity(0.1),
+              glowColor: AppColors.accentViolet.withValues(alpha: 0.1),
               child: postsAsync.when(
                 data: (docs) => _ViewsChart(postDocs: docs),
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -201,7 +201,7 @@ class _ViewsChart extends StatelessWidget {
             backDrawRodData: BackgroundBarChartRodData(
               show: true,
               toY: (dayViews.values.isEmpty ? 100 : dayViews.values.reduce((a, b) => a > b ? a : b) * 1.2),
-              color: AppColors.accentViolet.withOpacity(0.06),
+              color: AppColors.accentViolet.withValues(alpha: 0.06),
             ),
           ),
         ],
@@ -302,7 +302,7 @@ class _PostRow extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
-                    color: AppColors.accentRed.withOpacity(0.1),
+                    color: AppColors.accentRed.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Row(

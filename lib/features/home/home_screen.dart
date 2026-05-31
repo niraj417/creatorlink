@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+﻿import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -77,7 +77,7 @@ class _CreatorHome extends ConsumerWidget {
                       userAsync.when(
                         data: (user) => GlowyCard(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          glowColor: AppColors.accentGreen.withOpacity(0.2),
+                          glowColor: AppColors.accentGreen.withValues(alpha: 0.2),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -281,7 +281,7 @@ class CampaignCard extends StatelessWidget {
         child: Container(
           width: 270,
           decoration: AppDecorations.glassCard(
-            glowColor: AppColors.accentViolet.withOpacity(0.15),
+            glowColor: AppColors.accentViolet.withValues(alpha: 0.15),
           ),
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -301,14 +301,14 @@ class CampaignCard extends StatelessWidget {
                             placeholder: (_, __) => Container(
                               width: 40,
                               height: 40,
-                              color: AppColors.accentViolet.withOpacity(0.2),
+                              color: AppColors.accentViolet.withValues(alpha: 0.2),
                               child: const Icon(Icons.business, size: 20,
                                   color: AppColors.accentViolet),
                             ),
                             errorWidget: (_, __, ___) => Container(
                               width: 40,
                               height: 40,
-                              color: AppColors.accentViolet.withOpacity(0.2),
+                              color: AppColors.accentViolet.withValues(alpha: 0.2),
                               child: const Icon(Icons.business, size: 20,
                                   color: AppColors.accentViolet),
                             ),
@@ -317,7 +317,7 @@ class CampaignCard extends StatelessWidget {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: AppColors.accentViolet.withOpacity(0.15),
+                              color: AppColors.accentViolet.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(Icons.business_rounded,
@@ -359,7 +359,7 @@ class CampaignCard extends StatelessWidget {
                     return Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: AppColors.accentViolet.withOpacity(0.08),
+                        color: AppColors.accentViolet.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
@@ -441,10 +441,10 @@ class _NewCampaignCard extends StatelessWidget {
       child: Container(
         width: 160,
         decoration: BoxDecoration(
-          color: AppColors.accentViolet.withOpacity(0.08),
+          color: AppColors.accentViolet.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AppColors.accentViolet.withOpacity(0.4),
+            color: AppColors.accentViolet.withValues(alpha: 0.4),
             width: 1.5,
             strokeAlign: BorderSide.strokeAlignInside,
           ),
@@ -456,7 +456,7 @@ class _NewCampaignCard extends StatelessWidget {
               width: 52,
               height: 52,
               decoration: BoxDecoration(
-                color: AppColors.accentViolet.withOpacity(0.15),
+                color: AppColors.accentViolet.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.add_rounded,
@@ -491,14 +491,14 @@ class _QuickStatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: AppDecorations.glassCard(glowColor: color.withOpacity(0.1)),
+      decoration: AppDecorations.glassCard(glowColor: color.withValues(alpha: 0.1)),
       child: Row(
         children: [
           Container(
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.12),
+              color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: color, size: 20),

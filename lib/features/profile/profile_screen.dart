@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -47,7 +47,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.accentViolet.withOpacity(0.3),
+                            color: AppColors.accentViolet.withValues(alpha: 0.3),
                             blurRadius: 20,
                           ),
                         ],
@@ -79,10 +79,10 @@ class ProfileScreen extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.accentViolet.withOpacity(0.1),
+                        color: AppColors.accentViolet.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                            color: AppColors.accentViolet.withOpacity(0.3)),
+                            color: AppColors.accentViolet.withValues(alpha: 0.3)),
                       ),
                       child: Text(
                         user?.roleLabel ?? 'Creator',
@@ -100,7 +100,7 @@ class ProfileScreen extends ConsumerWidget {
               // Stats
               if (user?.isBrand == false) ...[
                 GlowyCard(
-                  glowColor: AppColors.accentGreen.withOpacity(0.08),
+                  glowColor: AppColors.accentGreen.withValues(alpha: 0.08),
                   child: Column(
                     children: [
                       StatRow(

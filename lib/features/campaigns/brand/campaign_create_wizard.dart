@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -521,7 +521,7 @@ class _Step3 extends StatelessWidget {
                 color: AppColors.surfaceElevated,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: AppColors.accentViolet.withOpacity(0.4),
+                  color: AppColors.accentViolet.withValues(alpha: 0.4),
                   style: BorderStyle.solid,
                 ),
               ),
@@ -709,7 +709,7 @@ class _Step5 extends StatelessWidget {
               style: AppTextStyles.bodyMedium),
           const SizedBox(height: 24),
           GlowyCard(
-            glowColor: AppColors.accentViolet.withOpacity(0.15),
+            glowColor: AppColors.accentViolet.withValues(alpha: 0.15),
             child: Column(
               children: [
                 _ReviewRow('Campaign', name),
@@ -726,9 +726,9 @@ class _Step5 extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: AppColors.accentAmber.withOpacity(0.08),
+              color: AppColors.accentAmber.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.accentAmber.withOpacity(0.3)),
+              border: Border.all(color: AppColors.accentAmber.withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [

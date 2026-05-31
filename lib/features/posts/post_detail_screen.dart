@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -58,10 +58,10 @@ class _PostDetailBody extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: _statusColor(post.status).withOpacity(0.08),
+              color: _statusColor(post.status).withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                  color: _statusColor(post.status).withOpacity(0.3)),
+                  color: _statusColor(post.status).withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
@@ -88,7 +88,7 @@ class _PostDetailBody extends StatelessWidget {
 
           // Stats
           GlowyCard(
-            glowColor: AppColors.accentViolet.withOpacity(0.1),
+            glowColor: AppColors.accentViolet.withValues(alpha: 0.1),
             child: Column(
               children: [
                 StatRow(
@@ -143,10 +143,10 @@ class _PostDetailBody extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.accentRed.withOpacity(0.08),
+                color: AppColors.accentRed.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(14),
                 border:
-                    Border.all(color: AppColors.accentRed.withOpacity(0.3)),
+                    Border.all(color: AppColors.accentRed.withValues(alpha: 0.3)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

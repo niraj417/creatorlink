@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -19,7 +19,7 @@ class ShimmerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: AppColors.surfaceElevated,
-      highlightColor: AppColors.surfaceCard.withOpacity(0.3),
+      highlightColor: AppColors.surfaceCard.withValues(alpha: 0.3),
       child: Container(
         height: height,
         width: width ?? double.infinity,
@@ -105,7 +105,7 @@ class ShimmerAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: AppColors.surfaceElevated,
-      highlightColor: AppColors.surfaceCard.withOpacity(0.3),
+      highlightColor: AppColors.surfaceCard.withValues(alpha: 0.3),
       child: CircleAvatar(
         radius: size / 2,
         backgroundColor: AppColors.surfaceElevated,
@@ -124,7 +124,7 @@ class ShimmerLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: AppColors.surfaceElevated,
-      highlightColor: AppColors.surfaceCard.withOpacity(0.3),
+      highlightColor: AppColors.surfaceCard.withValues(alpha: 0.3),
       child: Container(
         width: width,
         height: height,

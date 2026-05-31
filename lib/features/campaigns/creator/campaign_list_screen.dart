@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+﻿import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -150,7 +150,7 @@ class _CampaignListTile extends StatelessWidget {
     return GlowyCard(
       onTap: () => context.push('/campaigns/${campaign.id}'),
       padding: const EdgeInsets.all(16),
-      glowColor: AppColors.accentViolet.withOpacity(0.08),
+      glowColor: AppColors.accentViolet.withValues(alpha: 0.08),
       child: Row(
         children: [
           // Brand logo
@@ -165,7 +165,7 @@ class _CampaignListTile extends StatelessWidget {
                     placeholder: (_, __) => Container(
                       width: 52,
                       height: 52,
-                      color: AppColors.accentViolet.withOpacity(0.15),
+                      color: AppColors.accentViolet.withValues(alpha: 0.15),
                     ),
                     errorWidget: (_, __, ___) => _BrandPlaceholder(),
                   )
@@ -230,7 +230,7 @@ class _BrandPlaceholder extends StatelessWidget {
       width: 52,
       height: 52,
       decoration: BoxDecoration(
-        color: AppColors.accentViolet.withOpacity(0.15),
+        color: AppColors.accentViolet.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Icon(Icons.business_rounded,
@@ -259,7 +259,7 @@ class _FilterChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.accentViolet.withOpacity(0.15)
+              ? AppColors.accentViolet.withValues(alpha: 0.15)
               : AppColors.surfaceElevated,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(

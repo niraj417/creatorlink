@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -110,7 +110,7 @@ class _AppealScreenState extends ConsumerState<AppealScreen> {
             children: [
               // Info card
               GlowyCard(
-                glowColor: AppColors.accentAmber.withOpacity(0.1),
+                glowColor: AppColors.accentAmber.withValues(alpha: 0.1),
                 child: Row(
                   children: [
                     const Icon(Icons.gavel_rounded,

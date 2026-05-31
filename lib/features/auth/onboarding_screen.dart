@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -290,7 +290,7 @@ class _Step1 extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppColors.accentViolet.withOpacity(0.12)
+                        ? AppColors.accentViolet.withValues(alpha: 0.12)
                         : AppColors.surfaceElevated,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
@@ -379,7 +379,7 @@ class _Step2 extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppColors.accentViolet.withOpacity(0.15)
+                        ? AppColors.accentViolet.withValues(alpha: 0.15)
                         : AppColors.surfaceElevated,
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(
@@ -495,7 +495,7 @@ class _RoleCard extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         height: 200,
         decoration: BoxDecoration(
-          color: isSelected ? color.withOpacity(0.1) : AppColors.surfaceElevated,
+          color: isSelected ? color.withValues(alpha: 0.1) : AppColors.surfaceElevated,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? color : AppColors.glassBorder,
@@ -504,7 +504,7 @@ class _RoleCard extends StatelessWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: color.withOpacity(0.25),
+                    color: color.withValues(alpha: 0.25),
                     blurRadius: 20,
                     spreadRadius: 0,
                   )
@@ -518,7 +518,7 @@ class _RoleCard extends StatelessWidget {
               width: 52,
               height: 52,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: color.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(icon, color: color, size: 28),
@@ -636,7 +636,7 @@ class _CreatorStep4 extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppColors.accentViolet.withOpacity(0.15)
+                        ? AppColors.accentViolet.withValues(alpha: 0.15)
                         : AppColors.surfaceElevated,
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(

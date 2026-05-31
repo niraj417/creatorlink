@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -161,7 +161,7 @@ class _WithdrawalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlowyCard(
-      glowColor: AppColors.accentGreen.withOpacity(0.08),
+      glowColor: AppColors.accentGreen.withValues(alpha: 0.08),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -40,7 +40,7 @@ class CreatorWalletScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accentViolet.withOpacity(0.4),
+                      color: AppColors.accentViolet.withValues(alpha: 0.4),
                       blurRadius: 24,
                       offset: const Offset(0, 8),
                     ),
@@ -49,12 +49,12 @@ class CreatorWalletScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       children: [
-                        const Icon(Icons.stars_rounded,
+                        Icon(Icons.stars_rounded,
                             color: Colors.white70, size: 18),
-                        const SizedBox(width: 6),
-                        const Text('Points Balance',
+                        SizedBox(width: 6),
+                        Text('Points Balance',
                             style: TextStyle(
                                 color: Colors.white70, fontSize: 14)),
                       ],
@@ -175,8 +175,8 @@ class _RecentTransactions extends ConsumerWidget {
                           height: 40,
                           decoration: BoxDecoration(
                             color: tx.isCredit
-                                ? AppColors.accentGreen.withOpacity(0.1)
-                                : AppColors.accentRed.withOpacity(0.1),
+                                ? AppColors.accentGreen.withValues(alpha: 0.1)
+                                : AppColors.accentRed.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(

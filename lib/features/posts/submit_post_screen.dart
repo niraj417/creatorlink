@@ -1,4 +1,4 @@
-
+﻿
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -184,7 +184,7 @@ class _SubmitPostScreenState extends ConsumerState<SubmitPostScreen> {
             children: [
               // Info banner
               GlowyCard(
-                glowColor: AppColors.accentViolet.withOpacity(0.1),
+                glowColor: AppColors.accentViolet.withValues(alpha: 0.1),
                 child: Row(
                   children: [
                     const Icon(Icons.info_outline_rounded,
@@ -222,7 +222,7 @@ class _SubmitPostScreenState extends ConsumerState<SubmitPostScreen> {
                               horizontal: 14, vertical: 8),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? AppColors.accentViolet.withOpacity(0.15)
+                                ? AppColors.accentViolet.withValues(alpha: 0.15)
                                 : AppColors.surfaceElevated,
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(

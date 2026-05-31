@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
 /// A stat row: icon + label + value, used in dashboards and profiles
@@ -32,7 +32,7 @@ class StatRow extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: (iconColor ?? AppColors.accentViolet).withOpacity(0.12),
+                  color: (iconColor ?? AppColors.accentViolet).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -92,7 +92,7 @@ class MetricCard extends StatelessWidget {
         border: Border.all(color: AppColors.glassBorder),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.12),
+            color: color.withValues(alpha: 0.12),
             blurRadius: 14,
             spreadRadius: 0,
           ),

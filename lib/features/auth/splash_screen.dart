@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -64,7 +64,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.accentViolet.withOpacity(0.5),
+                    color: AppColors.accentViolet.withValues(alpha: 0.5),
                     blurRadius: 32,
                     spreadRadius: 4,
                   ),
@@ -111,7 +111,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               height: 24,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
-                color: AppColors.accentViolet.withOpacity(0.6),
+                color: AppColors.accentViolet.withValues(alpha: 0.6),
               ),
             ).animate(delay: 800.ms).fadeIn(),
           ],

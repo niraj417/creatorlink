@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// CreatorLink Design System
@@ -29,8 +29,8 @@ abstract class AppColors {
   static const Color statusFull = Color(0xFFFF4D6A);
 
   // Glows
-  static Color violetGlow = accentViolet.withOpacity(0.25);
-  static Color greenGlow = accentGreen.withOpacity(0.25);
+  static Color violetGlow = accentViolet.withValues(alpha: 0.25);
+  static Color greenGlow = accentGreen.withValues(alpha: 0.25);
 }
 
 abstract class AppTextStyles {
@@ -121,7 +121,7 @@ abstract class AppDecorations {
             spreadRadius: 0,
           ),
         BoxShadow(
-          color: Colors.black.withOpacity(0.3),
+          color: Colors.black.withValues(alpha: 0.3),
           blurRadius: 12,
           offset: const Offset(0, 4),
         ),
@@ -137,13 +137,13 @@ abstract class AppDecorations {
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [
-          AppColors.accentViolet.withOpacity(0.15),
-          AppColors.accentGreen.withOpacity(0.08),
+          AppColors.accentViolet.withValues(alpha: 0.15),
+          AppColors.accentGreen.withValues(alpha: 0.08),
         ],
       ),
       borderRadius: BorderRadius.circular(borderRadius),
       border: Border.all(
-        color: AppColors.accentViolet.withOpacity(0.3),
+        color: AppColors.accentViolet.withValues(alpha: 0.3),
         width: 1.0,
       ),
       boxShadow: [
@@ -219,7 +219,7 @@ class AppTheme {
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppColors.surfaceElevated,
-        indicatorColor: AppColors.accentViolet.withOpacity(0.15),
+        indicatorColor: AppColors.accentViolet.withValues(alpha: 0.15),
         iconTheme: const WidgetStatePropertyAll(
           IconThemeData(color: AppColors.textMuted),
         ),
@@ -287,7 +287,7 @@ class AppTheme {
       ),
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.surfaceElevated,
-        selectedColor: AppColors.accentViolet.withOpacity(0.2),
+        selectedColor: AppColors.accentViolet.withValues(alpha: 0.2),
         side: const BorderSide(color: AppColors.glassBorder),
         labelStyle: AppTextStyles.labelSmall,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),

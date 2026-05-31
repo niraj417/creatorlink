@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -109,7 +109,7 @@ class _AppealCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlowyCard(
-      glowColor: AppColors.accentViolet.withOpacity(0.08),
+      glowColor: AppColors.accentViolet.withValues(alpha: 0.08),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

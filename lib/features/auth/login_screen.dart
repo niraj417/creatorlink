@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -116,7 +116,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.accentViolet.withOpacity(0.45),
+                          color: AppColors.accentViolet.withValues(alpha: 0.45),
                           blurRadius: 28,
                           spreadRadius: 2,
                         ),
@@ -158,7 +158,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               const Spacer(),
               // Sign-in card
               GlowyCard(
-                glowColor: AppColors.accentViolet.withOpacity(0.2),
+                glowColor: AppColors.accentViolet.withValues(alpha: 0.2),
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -167,7 +167,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: AppColors.accentRed.withOpacity(0.1),
+                          color: AppColors.accentRed.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
@@ -250,7 +250,7 @@ class _FeatureRow extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            color: AppColors.accentViolet.withOpacity(0.12),
+            color: AppColors.accentViolet.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: AppColors.accentViolet, size: 18),
