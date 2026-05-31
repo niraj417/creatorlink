@@ -1,5 +1,3 @@
-﻿import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,7 +11,6 @@ import 'package:uuid/uuid.dart';
 import '../../../core/providers/firebase_providers.dart';
 import '../../../core/providers/user_provider.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/validators.dart';
 import '../../../shared/widgets/glowy_card.dart';
 
 class CampaignCreateWizard extends ConsumerStatefulWidget {
@@ -36,7 +33,6 @@ class _CampaignCreateWizardState extends ConsumerState<CampaignCreateWizard> {
 
   // Step 2
   final _guidelinesController = TextEditingController();
-  String? _guidelinePdfUrl;
 
   // Step 3 — assets
   final _uploadedAssetUrls = <String>[];

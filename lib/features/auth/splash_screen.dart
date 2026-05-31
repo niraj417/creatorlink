@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import '../../core/providers/firebase_providers.dart';
 import '../../core/providers/user_provider.dart';
 import '../../core/theme/app_theme.dart';
-import '../../shared/models/user_model.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});

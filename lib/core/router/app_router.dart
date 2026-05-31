@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/providers/user_provider.dart';
 import '../../core/providers/firebase_providers.dart';
 import '../../core/widgets/app_shell.dart';
 import '../../features/admin/admin_shell.dart';
@@ -53,7 +51,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       final isSplash = state.matchedLocation == '/splash';
       final isLogin = state.matchedLocation == '/login';
-      final isOnboarding = state.matchedLocation == '/onboarding';
 
       if (!isLoggedIn && !isLogin && !isSplash) return '/login';
       if (isLoggedIn && isLogin) return '/home';

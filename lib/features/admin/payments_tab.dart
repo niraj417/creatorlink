@@ -1,4 +1,4 @@
-﻿import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,7 +9,6 @@ import '../../core/utils/date_utils.dart';
 import '../../shared/models/withdrawal_model.dart';
 import '../../shared/widgets/glowy_card.dart';
 import '../../shared/widgets/shimmer_list.dart';
-import '../../shared/widgets/budget_pill.dart';
 
 final _pendingWithdrawalsProvider =
     FutureProvider<List<WithdrawalRequestModel>>((ref) async {
@@ -133,7 +132,7 @@ class PaymentsTab extends ConsumerWidget {
     );
 
     await batch.commit();
-    ref.refresh(_pendingWithdrawalsProvider);
+    ref.invalidate(_pendingWithdrawalsProvider);
   }
 
   Future<void> _rejectWithdrawal(
@@ -143,7 +142,7 @@ class PaymentsTab extends ConsumerWidget {
       'status': 'rejected',
       'processedAt': FieldValue.serverTimestamp(),
     });
-    ref.refresh(_pendingWithdrawalsProvider);
+    ref.invalidate(_pendingWithdrawalsProvider);
   }
 }
 

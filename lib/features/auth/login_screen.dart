@@ -1,4 +1,4 @@
-﻿import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -8,7 +8,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../core/router/app_router.dart';
 import '../../core/providers/firebase_providers.dart';
-import '../../core/providers/user_provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../shared/widgets/glowy_card.dart';
 
@@ -136,19 +135,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ],
               ),
               const Spacer(flex: 2),
-              // Features list
-              Column(
+              const Column(
                 children: [
                   _FeatureRow(
                     icon: Icons.campaign_outlined,
                     text: 'Discover brand campaigns tailored to your niche',
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   _FeatureRow(
                     icon: Icons.currency_rupee_rounded,
                     text: 'Earn ₹ per 1,000 views — credited instantly',
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   _FeatureRow(
                     icon: Icons.verified_rounded,
                     text: 'Transparent payouts with Razorpay',

@@ -1,4 +1,4 @@
-﻿import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import '../../core/providers/firebase_providers.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
-import '../../shared/widgets/glowy_card.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -568,12 +567,14 @@ class _Step4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (role == 'creator') return _CreatorStep4(
-      platforms: platforms,
-      monthlyReach: monthlyReach,
-      onPlatformToggle: onPlatformToggle,
-      onReachChanged: onReachChanged,
-    );
+    if (role == 'creator') {
+      return _CreatorStep4(
+        platforms: platforms,
+        monthlyReach: monthlyReach,
+        onPlatformToggle: onPlatformToggle,
+        onReachChanged: onReachChanged,
+      );
+    }
     return _BrandStep4(
       companyController: companyController,
       industry: industry,
@@ -669,7 +670,7 @@ class _CreatorStep4 extends StatelessWidget {
           Text('Average monthly reach:', style: AppTextStyles.titleMedium),
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
-            value: monthlyReach,
+            initialValue: monthlyReach,
             decoration: const InputDecoration(
               hintText: 'Select your reach',
             ),
@@ -739,7 +740,7 @@ class _BrandStep4 extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            value: industry,
+            initialValue: industry,
             decoration: const InputDecoration(
               labelText: 'Industry',
               prefixIcon: Icon(Icons.category_outlined),
@@ -752,7 +753,7 @@ class _BrandStep4 extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            value: budgetRange,
+            initialValue: budgetRange,
             decoration: const InputDecoration(
               labelText: 'Typical campaign budget',
               prefixIcon: Icon(Icons.currency_rupee),

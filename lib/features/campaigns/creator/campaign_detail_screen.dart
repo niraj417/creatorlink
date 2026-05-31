@@ -1,20 +1,15 @@
-﻿import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../core/providers/firebase_providers.dart';
-import '../../../core/providers/user_provider.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../shared/models/campaign_model.dart';
-import '../../../shared/models/post_model.dart';
 import '../../../shared/widgets/budget_pill.dart';
 import '../../../shared/widgets/glowy_card.dart';
-import '../../../shared/widgets/shimmer_list.dart';
 import '../campaign_providers.dart';
 
 class CampaignDetailScreen extends ConsumerWidget {
@@ -51,54 +46,6 @@ class _CampaignDetailBody extends ConsumerStatefulWidget {
 }
 
 class _CampaignDetailBodyState extends ConsumerState<_CampaignDetailBody> {
-  bool _isJoining = false;
-
-  Future<void> _joinCampaign() async {
-    setState(() => _isJoining = true);
-    try {
-      final user = ref.read(currentUserDataProvider).value;
-      if (user == null) return;
-
-      final firestore = ref.read(firestoreProvider);
-      final now = DateTime.now();
-
-      // Create post document with pendingPost status
-      await firestore.collection('posts').add({
-        'creatorUid': user.uid,
-        'campaignId': widget.campaign.id,
-        'postUrl': '',
-        'screenshotUrl': null,
-        'platform': 'instagram',
-        'status': 'pendingPost',
-        'views': 0,
-        'reach': 0,
-        'interactions': 0,
-        'flagged': false,
-        'flagReason': null,
-        'submittedAt': Timestamp.fromDate(now),
-        'mustStayUntil': Timestamp.fromDate(now.add(const Duration(days: 10))),
-        'creatorName': user.displayName,
-        'creatorPhotoUrl': user.photoURL,
-        'campaignName': widget.campaign.name,
-        'dailyViewHistory': {},
-      });
-
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('🎉 Joined campaign! Post your content and submit the URL.'),
-        ),
-      );
-      context.push('/posts/submit/${widget.campaign.id}');
-    } catch (e) {
-      setState(() => _isJoining = false);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error joining: $e')),
-        );
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

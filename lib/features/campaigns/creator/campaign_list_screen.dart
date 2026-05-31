@@ -1,11 +1,10 @@
-﻿import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/currency_formatter.dart';
 import '../../../shared/models/campaign_model.dart';
 import '../../../shared/widgets/budget_pill.dart';
 import '../../../shared/widgets/glowy_card.dart';
@@ -86,7 +85,7 @@ class _CampaignListScreenState extends ConsumerState<CampaignListScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.campaign_outlined,
+                        const Icon(Icons.campaign_outlined,
                             size: 64, color: AppColors.textMuted),
                         const SizedBox(height: 16),
                         Text('No campaigns found', style: AppTextStyles.titleMedium),

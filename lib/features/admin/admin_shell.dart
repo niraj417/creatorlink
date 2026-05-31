@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/providers/user_provider.dart';
 import '../../core/theme/app_theme.dart';
-import '../../shared/models/user_model.dart';
 
 class AdminShell extends ConsumerStatefulWidget {
   final Widget child;
@@ -54,7 +53,7 @@ class _AdminShellState extends ConsumerState<AdminShell> {
           backgroundColor: AppColors.surface,
           body: widget.child,
           bottomNavigationBar: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.surfaceElevated,
               border: Border(
                 top: BorderSide(color: AppColors.glassBorder),

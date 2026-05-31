@@ -1,15 +1,11 @@
-﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/providers/firebase_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/date_utils.dart';
 import '../../shared/models/post_model.dart';
-import '../../shared/widgets/budget_pill.dart';
 import '../../shared/widgets/glowy_card.dart';
 import '../../shared/widgets/shimmer_list.dart';
 
@@ -81,7 +77,7 @@ class FlagsTab extends ConsumerWidget {
       'flagged': false,
       'flagReason': null,
     });
-    ref.refresh(_flaggedPostsProvider);
+    ref.invalidate(_flaggedPostsProvider);
   }
 
   Future<void> _removePost(WidgetRef ref, String postId) async {
@@ -90,7 +86,7 @@ class FlagsTab extends ConsumerWidget {
       'status': 'removed',
       'flagged': false,
     });
-    ref.refresh(_flaggedPostsProvider);
+    ref.invalidate(_flaggedPostsProvider);
   }
 
   Future<void> _banCreator(WidgetRef ref, String uid) async {
