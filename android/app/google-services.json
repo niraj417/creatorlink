@@ -12,7 +12,12 @@
           "package_name": "com.creatorlink.creatorlink"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "246812613566-7av090tonlkth3mmcgotu35o8q6h67v1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCRX_IqO5tceLaxTwUB2i1il-lypRRdM1o"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246812613566-7av090tonlkth3mmcgotu35o8q6h67v1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
