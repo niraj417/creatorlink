@@ -13,12 +13,20 @@ class AppShell extends ConsumerStatefulWidget {
 }
 
 class _AppShellState extends ConsumerState<AppShell> {
-  int _selectedIndex = 0;
-
   static const _routes = ['/home', '/campaigns', '/wallet', '/profile'];
+
+  int _indexFromLocation(String location) {
+    for (var i = _routes.length - 1; i >= 0; i--) {
+      if (location.startsWith(_routes[i])) return i;
+    }
+    return 0;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final location = GoRouterState.of(context).matchedLocation;
+    final selectedIndex = _indexFromLocation(location);
+
     return Scaffold(
       backgroundColor: AppColors.surface,
       body: widget.child,
@@ -31,12 +39,11 @@ class _AppShellState extends ConsumerState<AppShell> {
         ),
         child: SafeArea(
           child: NavigationBar(
-            selectedIndex: _selectedIndex,
+            selectedIndex: selectedIndex,
             elevation: 0,
             backgroundColor: Colors.transparent,
             indicatorColor: AppColors.accentViolet.withValues(alpha: 0.15),
             onDestinationSelected: (i) {
-              setState(() => _selectedIndex = i);
               context.go(_routes[i]);
             },
             labelBehavior:

@@ -39,40 +39,62 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
-  /// Navigate user based on Firestore role/onboarding data
+  /// Navigate user based on Firestore role/onboarding data.
+  /// After sign-in the GoRouter redirect guard will fire automatically;
+  /// we only call context.go() as a fallback if the guard hasn't fired yet.
   Future<void> _navigateAfterSignIn(User user) async {
-    final firestore = ref.read(firestoreProvider);
-    final userDoc = await firestore.collection('users').doc(user.uid).get();
+    try {
+      final firestore = ref.read(firestoreProvider);
+      final userRef = firestore.collection('users').doc(user.uid);
+      final userDoc = await userRef.get();
 
-    if (!mounted) return;
-
-    if (!userDoc.exists) {
-      // New user — create base document
-      await firestore.collection('users').doc(user.uid).set({
-        'email': user.email,
-        'displayName': user.displayName ?? '',
-        'photoURL': user.photoURL ?? '',
-        'role': 'unknown',
-        'createdAt': FieldValue.serverTimestamp(),
-        'banned': false,
-        'walletPoints': 0,
-      });
       if (!mounted) return;
-      context.go('/onboarding');
-      return;
-    }
 
-    final userData = userDoc.data() as Map<String, dynamic>;
-    final role = userData['role'] as String? ?? 'unknown';
-    final onboarding = userData['onboarding'];
+      if (!userDoc.exists) {
+        // New user — create base document (check admin by email)
+        final role = user.email == 'kingniraj417@gmail.com'
+            ? 'admin'
+            : 'unknown';
+        await userRef.set({
+          'email': user.email ?? '',
+          'displayName': user.displayName ?? '',
+          'photoURL': user.photoURL ?? '',
+          'role': role,
+          'onboarding': null,
+          'createdAt': FieldValue.serverTimestamp(),
+          'banned': false,
+          'walletPoints': 0,
+        });
+        if (!mounted) return;
+        // Router guard will pick up auth state change; navigate explicitly
+        // in case the guard already ran before Firestore doc was written.
+        if (role == 'admin') {
+          context.go('/admin/flags');
+        } else {
+          context.go('/onboarding');
+        }
+        return;
+      }
 
-    if (!mounted) return;
-    if (role == 'unknown' || onboarding == null) {
-      context.go('/onboarding');
-    } else if (role == 'admin') {
-      context.go('/admin/flags');
-    } else {
-      context.go(AppRoutes.home);
+      final userData = userDoc.data() as Map<String, dynamic>;
+      final role = userData['role'] as String? ?? 'unknown';
+      final onboarding = userData['onboarding'];
+
+      if (!mounted) return;
+      if (role == 'admin') {
+        context.go('/admin/flags');
+      } else if (role == 'unknown' || onboarding == null) {
+        context.go('/onboarding');
+      } else {
+        context.go(AppRoutes.home);
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = 'Failed to load profile: ${e.toString()}';
+          _isLoading = false;
+        });
+      }
     }
   }
 

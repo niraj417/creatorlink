@@ -66,7 +66,24 @@ class FlagsTab extends ConsumerWidget {
           padding: EdgeInsets.all(16),
           child: ShimmerList(itemCount: 5),
         ),
-        error: (e, s) => Center(child: Text('Error: $e')),
+        error: (e, s) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline_rounded,
+                  size: 48, color: AppColors.accentRed),
+              const SizedBox(height: 12),
+              Text('Failed to load flagged posts', style: AppTextStyles.titleMedium),
+              const SizedBox(height: 6),
+              Text('$e', style: AppTextStyles.bodySmall),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => ref.refresh(_flaggedPostsProvider),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -136,7 +153,10 @@ class _FlagCard extends StatelessWidget {
                   color: AppColors.accentRed)),
           const SizedBox(height: 4),
           GestureDetector(
-            onTap: () => launchUrl(Uri.parse(post.postUrl)),
+            onTap: post.postUrl.isEmpty
+                ? null
+                : () => launchUrl(Uri.parse(post.postUrl),
+                    mode: LaunchMode.externalApplication),
             child: Text(
               post.postUrl.isEmpty ? 'No URL' : post.postUrl,
               style: AppTextStyles.bodySmall.copyWith(

@@ -1,4 +1,4 @@
-﻿import 'dart:async' show unawaited;
+import 'dart:async' show unawaited;
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -510,7 +510,7 @@ class AnalyticsAdminTab extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh_rounded),
-            onPressed: () => ref.refresh(_platformStatsProvider),
+            onPressed: () => ref.refresh(_platformStatsProvider.future),
             tooltip: 'Refresh',
           ),
         ],

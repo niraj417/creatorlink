@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -168,7 +168,22 @@ class ProfileScreen extends ConsumerWidget {
         ),
         loading: () =>
             const Center(child: CircularProgressIndicator()),
-        error: (e, s) => const SizedBox(),
+        error: (e, s) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline_rounded,
+                  size: 48, color: AppColors.accentRed),
+              const SizedBox(height: 12),
+              Text('Failed to load profile', style: AppTextStyles.titleMedium),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => ref.invalidate(currentUserDataProvider),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

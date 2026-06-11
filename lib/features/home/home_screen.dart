@@ -8,10 +8,12 @@ import '../../core/theme/app_theme.dart';
 import '../../core/providers/user_provider.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../shared/models/campaign_model.dart';
+import '../../shared/models/post_model.dart';
 import '../../shared/widgets/budget_pill.dart';
 import '../../shared/widgets/glowy_card.dart';
 import '../../shared/widgets/shimmer_list.dart';
 import '../campaigns/campaign_providers.dart';
+
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -154,33 +156,70 @@ class _CreatorHome extends ConsumerWidget {
                     children: [
                       Text('Your Activity', style: AppTextStyles.titleMedium),
                       const SizedBox(height: 12),
-                      const Row(
-                        children: [
-                          Expanded(
-                            child: _QuickStatCard(
-                              icon: Icons.article_outlined,
-                              label: 'Active Posts',
-                              value: '—',
-                              color: AppColors.accentViolet,
-                            ),
+                      Builder(builder: (context) {
+                        final postsAsync = ref.watch(creatorPostsProvider);
+                        return postsAsync.when(
+                          data: (posts) {
+                            final active = posts
+                                .where((p) =>
+                                    p.status == PostStatus.approved ||
+                                    p.status == PostStatus.pendingReview)
+                                .length;
+                            final totalViews = posts.fold<int>(
+                                0, (sum, p) => sum + p.views);
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: _QuickStatCard(
+                                    icon: Icons.article_outlined,
+                                    label: 'Active Posts',
+                                    value: '$active',
+                                    color: AppColors.accentViolet,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _QuickStatCard(
+                                    icon: Icons.visibility_outlined,
+                                    label: 'Total Views',
+                                    value: CurrencyFormatter.compactViews(totalViews),
+                                    color: AppColors.accentGreen,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                          loading: () => const ShimmerList(itemCount: 1, itemHeight: 72),
+                          error: (_, __) => const Row(
+                            children: [
+                              Expanded(
+                                child: _QuickStatCard(
+                                  icon: Icons.article_outlined,
+                                  label: 'Active Posts',
+                                  value: '—',
+                                  color: AppColors.accentViolet,
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Expanded(
+                                child: _QuickStatCard(
+                                  icon: Icons.visibility_outlined,
+                                  label: 'Total Views',
+                                  value: '—',
+                                  color: AppColors.accentGreen,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: _QuickStatCard(
-                              icon: Icons.visibility_outlined,
-                              label: 'Total Views',
-                              value: '—',
-                              color: AppColors.accentGreen,
-                            ),
-                          ),
-                        ],
-                      ),
+                        );
+                      }),
                     ],
                   ),
                 ).animate(delay: 200.ms).fadeIn(),
               ),
 
               const SliverToBoxAdapter(child: SizedBox(height: 100)),
+
             ],
           ),
         ),

@@ -4,6 +4,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/providers/firebase_providers.dart';
 import '../../core/providers/user_provider.dart';
 import '../../shared/models/campaign_model.dart';
+import '../../shared/models/post_model.dart';
+
+/// Current creator's own posts (all statuses) — real-time stream
+final creatorPostsProvider = StreamProvider<List<PostModel>>((ref) {
+  final user = ref.watch(currentUserDataProvider).value;
+  if (user == null) return const Stream.empty();
+  final firestore = ref.watch(firestoreProvider);
+  return firestore
+      .collection('posts')
+      .where('creatorUid', isEqualTo: user.uid)
+      .snapshots()
+      .map((snap) =>
+          snap.docs.map((d) => PostModel.fromFirestore(d)).toList());
+});
+
 
 /// All active campaigns (for creator home/list) — paginated
 final activeCampaignsProvider = FutureProvider<List<CampaignModel>>((ref) async {
@@ -62,14 +77,29 @@ final allCampaignsAdminProvider =
   return snap.docs.map((d) => CampaignModel.fromFirestore(d)).toList();
 });
 
-/// Posts for a campaign — for brand dashboard
+/// Posts for a campaign — for brand dashboard (real-time stream so analytics
+/// update the moment a creator submits or updates their post)
 final campaignPostsProvider =
-    FutureProvider.family<List<QueryDocumentSnapshot>, String>((ref, cid) async {
+    StreamProvider.family<List<QueryDocumentSnapshot>, String>((ref, cid) {
   final firestore = ref.watch(firestoreProvider);
-  final snap = await firestore
+  // Do NOT orderBy 'submittedAt' — pendingPost docs have submittedAt: null
+  // and Firestore drops them from ordered queries. Sort client-side instead.
+  return firestore
       .collection('posts')
       .where('campaignId', isEqualTo: cid)
-      .orderBy('submittedAt', descending: true)
-      .get();
-  return snap.docs;
+      .snapshots()
+      .map((snap) {
+        final docs = snap.docs.toList();
+        // Sort: most recent submittedAt first (nulls at end)
+        docs.sort((a, b) {
+          final aTs = a.data()['submittedAt'];
+          final bTs = b.data()['submittedAt'];
+          if (aTs == null && bTs == null) return 0;
+          if (aTs == null) return 1;
+          if (bTs == null) return -1;
+          return (bTs as dynamic).compareTo(aTs as dynamic);
+        });
+        return docs;
+      });
 });
+

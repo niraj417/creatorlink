@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/providers/firebase_providers.dart';
+import '../../../core/providers/user_provider.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../shared/models/campaign_model.dart';
@@ -46,12 +49,83 @@ class _CampaignDetailBody extends ConsumerStatefulWidget {
 }
 
 class _CampaignDetailBodyState extends ConsumerState<_CampaignDetailBody> {
+  bool _isJoining = false;
+
+  Future<void> _joinCampaign() async {
+    final campaign = widget.campaign;
+    final user = ref.read(currentUserDataProvider).value;
+    if (user == null) return;
+
+    setState(() => _isJoining = true);
+    try {
+      final firestore = ref.read(firestoreProvider);
+
+      // Check if already joined
+      final existing = await firestore
+          .collection('posts')
+          .where('creatorUid', isEqualTo: user.uid)
+          .where('campaignId', isEqualTo: campaign.id)
+          .limit(1)
+          .get();
+
+      if (existing.docs.isNotEmpty) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('You have already joined this campaign.')),
+        );
+        setState(() => _isJoining = false);
+        return;
+      }
+
+      // Create pending post slot
+      await firestore.collection('posts').add({
+        'creatorUid': user.uid,
+        'campaignId': campaign.id,
+        'postUrl': '',
+        'screenshotUrl': null,
+        'platform': '',
+        'status': 'pendingPost',
+        'views': 0,
+        'reach': 0,
+        'interactions': 0,
+        'flagged': false,
+        'flagReason': null,
+        'submittedAt': null,
+        'mustStayUntil': null,
+        'creatorName': user.displayName,
+        'creatorPhotoUrl': user.photoURL,
+        'campaignName': campaign.name,
+        'dailyViewHistory': {},
+        'joinedAt': FieldValue.serverTimestamp(),
+      });
+
+      if (!mounted) return;
+      setState(() => _isJoining = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('🎉 Joined! Now submit your post URL to start earning.'),
+          backgroundColor: AppColors.accentGreen,
+        ),
+      );
+      // Navigate to submit post
+      context.push('/posts/submit/${campaign.id}');
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isJoining = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final campaign = widget.campaign;
 
-    return CustomScrollView(
+    return Stack(
+      children: [
+        CustomScrollView(
       slivers: [
         // ─── App Bar ────────────────────────────────────────────────
         SliverAppBar(
@@ -251,6 +325,78 @@ class _CampaignDetailBodyState extends ConsumerState<_CampaignDetailBody> {
 
               const SizedBox(height: 80), // space for FAB
             ]),
+          ),
+        ),
+      ],
+    ),
+
+        // ─── Sticky Join / Submit Button ──────────────────────────────
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColors.surface.withValues(alpha: 0),
+                  AppColors.surface,
+                ],
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _isJoining
+                        ? null
+                        : (campaign.status == CampaignStatus.active
+                            ? _joinCampaign
+                            : null),
+                    icon: _isJoining
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: Colors.white),
+                          )
+                        : const Icon(Icons.rocket_launch_rounded, size: 20),
+                    label: Text(
+                      campaign.status == CampaignStatus.active
+                          ? 'Join Campaign & Submit Post'
+                          : 'Campaign Not Active',
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: campaign.status == CampaignStatus.active
+                          ? AppColors.accentViolet
+                          : AppColors.textMuted,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                  ),
+                ),
+                if (campaign.status == CampaignStatus.active) ...[
+                  const SizedBox(height: 6),
+                  TextButton(
+                    onPressed: () =>
+                        context.push('/posts/submit/${campaign.id}'),
+                    child: Text(
+                      'Already joined? Submit post URL →',
+                      style: AppTextStyles.bodySmall
+                          .copyWith(color: AppColors.accentViolet),
+                    ),
+                  ),
+                ],
+              ],
+            ),
           ),
         ),
       ],

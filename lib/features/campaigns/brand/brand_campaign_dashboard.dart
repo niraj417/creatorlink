@@ -175,18 +175,38 @@ class _ViewsChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Aggregate views per day from all posts
-    final Map<int, double> dayViews = {};
-    for (int i = 0; i < 7; i++) {
-      dayViews[i] = 0;
+    // Build last-7-day date labels and a mapping of dateKey → bar index (0=oldest, 6=today)
+    final today = DateTime.now();
+    final Map<String, int> dateToIndex = {};
+    final List<String> dayLabels = [];
+    for (int i = 6; i >= 0; i--) {
+      final day = today.subtract(Duration(days: i));
+      final key =
+          '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+      dateToIndex[key] = 6 - i; // index 0 = 6 days ago, 6 = today
+      if (i == 0) {
+        dayLabels.add('Today');
+      } else if (i == 1) {
+        dayLabels.add('Y\'day');
+      } else {
+        dayLabels.add('${i}d');
+      }
     }
 
-    // This is a placeholder — in production, aggregate from dailyViewHistory
+    // Aggregate dailyViewHistory from all posts
+    final Map<int, double> dayViews = {for (int i = 0; i < 7; i++) i: 0};
     for (var doc in postDocs) {
       final post = PostModel.fromFirestore(doc);
-      final dayIndex = DateTime.now().difference(post.submittedAt).inDays.clamp(0, 6);
-      dayViews[dayIndex] = (dayViews[dayIndex] ?? 0) + post.views;
+      post.dailyViewHistory.forEach((dateKey, count) {
+        final idx = dateToIndex[dateKey];
+        if (idx != null) {
+          dayViews[idx] = (dayViews[idx] ?? 0) + count;
+        }
+      });
     }
+
+    final maxY = dayViews.values.fold<double>(0, (a, b) => a > b ? a : b);
+    final chartMax = maxY > 0 ? maxY * 1.3 : 100.0;
 
     final bars = dayViews.entries.map((e) {
       return BarChartGroupData(
@@ -199,7 +219,7 @@ class _ViewsChart extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             backDrawRodData: BackgroundBarChartRodData(
               show: true,
-              toY: (dayViews.values.isEmpty ? 100 : dayViews.values.reduce((a, b) => a > b ? a : b) * 1.2),
+              toY: chartMax,
               color: AppColors.accentViolet.withValues(alpha: 0.06),
             ),
           ),
@@ -210,6 +230,7 @@ class _ViewsChart extends StatelessWidget {
     return BarChart(
       BarChartData(
         barGroups: bars,
+        maxY: chartMax,
         gridData: FlGridData(
           show: true,
           drawVerticalLine: false,
@@ -234,9 +255,8 @@ class _ViewsChart extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (v, _) {
-                const days = ['6d', '5d', '4d', '3d', '2d', 'Y\'day', 'Today'];
                 final idx = v.toInt().clamp(0, 6);
-                return Text(days[idx], style: AppTextStyles.labelSmall);
+                return Text(dayLabels[idx], style: AppTextStyles.labelSmall);
               },
             ),
           ),
@@ -250,12 +270,17 @@ class _ViewsChart extends StatelessWidget {
         barTouchData: BarTouchData(
           touchTooltipData: BarTouchTooltipData(
             getTooltipColor: (_) => AppColors.surfaceElevated,
+            getTooltipItem: (group, _, rod, __) => BarTooltipItem(
+              CurrencyFormatter.compactViews(rod.toY.toInt()),
+              AppTextStyles.labelSmall.copyWith(color: AppColors.textPrimary),
+            ),
           ),
         ),
       ),
     );
   }
 }
+
 
 class _PostRow extends StatelessWidget {
   final PostModel post;

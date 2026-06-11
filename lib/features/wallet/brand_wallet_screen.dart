@@ -1,4 +1,4 @@
-﻿import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -83,6 +83,7 @@ class _WithdrawalRequestScreenState extends ConsumerState<WithdrawalRequestScree
       });
 
       if (!mounted) return;
+      setState(() => _isSubmitting = false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('✅ Withdrawal request submitted!')),
       );
@@ -310,7 +311,22 @@ class _WithdrawalRequestScreenState extends ConsumerState<WithdrawalRequestScree
           ),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, s) => const SizedBox(),
+        error: (e, s) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline_rounded,
+                  size: 48, color: AppColors.accentRed),
+              const SizedBox(height: 12),
+              const Text('Failed to load wallet data'),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () => ref.invalidate(currentUserDataProvider),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

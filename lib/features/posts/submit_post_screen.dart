@@ -1,4 +1,4 @@
-﻿
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,7 +12,9 @@ import '../../core/providers/firebase_providers.dart';
 import '../../core/providers/user_provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/validators.dart';
+import '../../shared/models/post_model.dart';
 import '../../shared/widgets/glowy_card.dart';
+
 
 class SubmitPostScreen extends ConsumerStatefulWidget {
   final String campaignId;
@@ -110,9 +112,17 @@ class _SubmitPostScreenState extends ConsumerState<SubmitPostScreen> {
           .limit(1)
           .get();
 
+      final batch = firestore.batch();
+      final campaignRef =
+          firestore.collection('campaigns').doc(widget.campaignId);
+
       if (existingQuery.docs.isNotEmpty) {
-        // Update existing pending post
-        await existingQuery.docs.first.reference.update({
+        // Re-submission: subtract OLD values from campaign metrics first,
+        // then add new values so we never double-count.
+        final oldPost = PostModel.fromFirestore(existingQuery.docs.first);
+        final postRef = existingQuery.docs.first.reference;
+
+        batch.update(postRef, {
           'postUrl': _urlController.text.trim(),
           'screenshotUrl': _screenshotUrl,
           'platform': _platform,
@@ -121,14 +131,26 @@ class _SubmitPostScreenState extends ConsumerState<SubmitPostScreen> {
           'reach': reach,
           'interactions': interactions,
           'submittedAt': Timestamp.fromDate(now),
-          'mustStayUntil': Timestamp.fromDate(now.add(const Duration(days: 10))),
+          'mustStayUntil':
+              Timestamp.fromDate(now.add(const Duration(days: 10))),
           'dailyViewHistory': {
             _dateKey(now): views,
           },
         });
+
+        // Net delta so metrics don't drift on re-submit
+        final viewDelta = views - oldPost.views;
+        final reachDelta = reach - oldPost.reach;
+        final interactionDelta = interactions - oldPost.interactions;
+        batch.update(campaignRef, {
+          'metrics.totalViews': FieldValue.increment(viewDelta),
+          'metrics.totalReach': FieldValue.increment(reachDelta),
+          'metrics.totalInteractions': FieldValue.increment(interactionDelta),
+        });
       } else {
-        // Create new post
-        await firestore.collection('posts').add({
+        // New post document
+        final newPostRef = firestore.collection('posts').doc();
+        batch.set(newPostRef, {
           'creatorUid': user.uid,
           'campaignId': widget.campaignId,
           'postUrl': _urlController.text.trim(),
@@ -141,7 +163,8 @@ class _SubmitPostScreenState extends ConsumerState<SubmitPostScreen> {
           'flagged': false,
           'flagReason': null,
           'submittedAt': Timestamp.fromDate(now),
-          'mustStayUntil': Timestamp.fromDate(now.add(const Duration(days: 10))),
+          'mustStayUntil':
+              Timestamp.fromDate(now.add(const Duration(days: 10))),
           'creatorName': user.displayName,
           'creatorPhotoUrl': user.photoURL,
           'campaignName': null, // fetched from campaign
@@ -149,9 +172,19 @@ class _SubmitPostScreenState extends ConsumerState<SubmitPostScreen> {
             _dateKey(now): views,
           },
         });
+
+        // Increment campaign metrics
+        batch.update(campaignRef, {
+          'metrics.totalViews': FieldValue.increment(views),
+          'metrics.totalReach': FieldValue.increment(reach),
+          'metrics.totalInteractions': FieldValue.increment(interactions),
+        });
       }
 
+      await batch.commit();
+
       if (!mounted) return;
+      setState(() => _isSubmitting = false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('✅ Post submitted for review!'),
@@ -166,6 +199,7 @@ class _SubmitPostScreenState extends ConsumerState<SubmitPostScreen> {
       }
     }
   }
+
 
   String _dateKey(DateTime dt) =>
       '${dt.year}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')}';

@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/providers/firebase_providers.dart';
+import '../../core/providers/user_provider.dart';
 import '../../core/widgets/app_shell.dart';
 import '../../features/admin/admin_shell.dart';
 import '../../features/admin/admin_tabs.dart';
@@ -37,23 +39,84 @@ abstract class AppRoutes {
 }
 
 // ─── Router Provider ─────────────────────────────────────────────────────────
+class RouterTransitionNotifier extends ChangeNotifier {
+  final Ref _ref;
+
+  RouterTransitionNotifier(this._ref) {
+    _ref.listen(authStateProvider, (_, __) => notifyListeners());
+    _ref.listen(currentUserDataProvider, (_, __) => notifyListeners());
+  }
+}
+
+final routerTransitionNotifierProvider = Provider<RouterTransitionNotifier>((ref) {
+  return RouterTransitionNotifier(ref);
+});
+
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authStateProvider);
+  final refreshListenable = ref.watch(routerTransitionNotifierProvider);
 
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: false,
+    refreshListenable: refreshListenable,
     redirect: (context, state) {
+      final authState = ref.read(authStateProvider);
+      final userData = ref.read(currentUserDataProvider);
+
       final isLoggedIn = authState.value != null;
-      final isLoading = authState.isLoading;
+      final isAuthLoading = authState.isLoading;
+      final isUserLoading = userData.isLoading;
 
-      if (isLoading) return null; // wait for auth resolution
+      // Wait for both auth and user data to resolve before making decisions
+      if (isAuthLoading || isUserLoading) return null;
 
-      final isSplash = state.matchedLocation == '/splash';
-      final isLogin = state.matchedLocation == '/login';
+      final location = state.matchedLocation;
+      final isSplash = location == '/splash';
+      final isLogin = location == '/login';
+      final isOnboarding = location == '/onboarding';
+      final isAdminRoute = location.startsWith('/admin');
 
+      // ── Not logged in ─────────────────────────────────────────────────────
+      // Allow splash and login; redirect everything else to login
       if (!isLoggedIn && !isLogin && !isSplash) return '/login';
-      if (isLoggedIn && isLogin) return '/home';
+
+      // ── Logged in ─────────────────────────────────────────────────────────
+      if (isLoggedIn) {
+        final user = userData.value;
+
+        // Banned users are always kicked back to login
+        if (user != null && user.banned) {
+          if (!isLogin) return '/login';
+          return null;
+        }
+
+        // On login screen → decide where to send them
+        if (isLogin) {
+          if (user == null || user.needsOnboarding) return '/onboarding';
+          if (user.isAdmin) return '/admin/flags';
+          return '/home';
+        }
+
+        // Enforce onboarding gate (not on splash, not already on onboarding)
+        if (!isSplash && !isOnboarding) {
+          if (user != null && user.needsOnboarding) return '/onboarding';
+        }
+
+        // Onboarding complete → leave /onboarding
+        if (isOnboarding) {
+          if (user != null && !user.needsOnboarding) {
+            return user.isAdmin ? '/admin/flags' : '/home';
+          }
+        }
+
+        // Guard admin routes — only admins may access /admin/*
+        if (isAdminRoute && user != null && !user.isAdmin) return '/home';
+
+        // Redirect admins away from creator/brand shell routes
+        if (!isAdminRoute && !isSplash && !isOnboarding && user != null && user.isAdmin) {
+          return '/admin/flags';
+        }
+      }
 
       return null;
     },

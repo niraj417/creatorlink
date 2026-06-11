@@ -22,17 +22,36 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future<void> _navigate() async {
+    // Minimum splash display time
     await Future.delayed(const Duration(milliseconds: 2000));
     if (!mounted) return;
 
-    final auth = ref.read(authStateProvider);
+    // Wait for auth stream to resolve (not still loading)
+    var auth = ref.read(authStateProvider);
+    while (auth.isLoading) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (!mounted) return;
+      auth = ref.read(authStateProvider);
+    }
+
     if (auth.value == null) {
+      if (!mounted) return;
       context.go('/login');
       return;
     }
 
-    // Check user profile
-    final user = ref.read(currentUserDataProvider).value;
+    // Wait for Firestore user document stream to resolve
+    var userData = ref.read(currentUserDataProvider);
+    var attempts = 0;
+    while (userData.isLoading && attempts < 30) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (!mounted) return;
+      userData = ref.read(currentUserDataProvider);
+      attempts++;
+    }
+
+    if (!mounted) return;
+    final user = userData.value;
     if (user == null || user.needsOnboarding) {
       context.go('/onboarding');
     } else if (user.isAdmin) {

@@ -100,6 +100,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             _selectedRole == 'brand' ? _companyController.text.trim() : null,
         'industry': _industry,
         'budgetRange': _budgetRange,
+        // Fields required by OnboardingData.fromMap (must be persisted)
+        'followers': 0,
+        'socialLinks': <String, String>{},
         'completedAt': FieldValue.serverTimestamp(),
       };
 
@@ -108,15 +111,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         'onboarding': onboardingData,
       });
 
+      // Wait for Firestore stream to emit the updated doc so that the
+      // GoRouter redirect guard sees needsOnboarding == false before we
+      // call context.go(). 500 ms is a safe threshold on most connections.
+      await Future.delayed(const Duration(milliseconds: 500));
+
       if (!mounted) return;
-      if (_selectedRole == 'brand') {
-        context.go(AppRoutes.home);
-      } else {
-        context.go(AppRoutes.home);
-      }
-    } catch (e) {
       setState(() => _isSaving = false);
+      // Both creator and brand land on /home; HomeScreen is role-aware.
+      context.go(AppRoutes.home);
+    } catch (e) {
       if (mounted) {
+        setState(() => _isSaving = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error saving: $e')),
         );
