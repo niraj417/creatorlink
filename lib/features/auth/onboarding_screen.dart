@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/providers/firebase_providers.dart';
+import '../../core/providers/user_provider.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -111,10 +112,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         'onboarding': onboardingData,
       });
 
-      // Wait for Firestore stream to emit the updated doc so that the
-      // GoRouter redirect guard sees needsOnboarding == false before we
-      // call context.go(). 500 ms is a safe threshold on most connections.
-      await Future.delayed(const Duration(milliseconds: 500));
+      // Wait for the local Riverpod provider to receive the update so that
+      // the GoRouter redirect guard sees needsOnboarding == false before we
+      // call context.go().
+      var user = ref.read(currentUserDataProvider).value;
+      var attempts = 0;
+      while ((user == null || user.needsOnboarding) && attempts < 30) {
+        await Future.delayed(const Duration(milliseconds: 100));
+        if (!mounted) return;
+        user = ref.read(currentUserDataProvider).value;
+        attempts++;
+      }
 
       if (!mounted) return;
       setState(() => _isSaving = false);

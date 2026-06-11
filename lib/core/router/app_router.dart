@@ -65,7 +65,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       final isLoggedIn = authState.value != null;
       final isAuthLoading = authState.isLoading;
-      final isUserLoading = userData.isLoading;
+      final isUserLoading = userData.isLoading && !userData.hasValue;
 
       // Wait for both auth and user data to resolve before making decisions
       if (isAuthLoading || isUserLoading) return null;
